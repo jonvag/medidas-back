@@ -1,6 +1,6 @@
-# sin-ssr-back
-_Back de talento activo_
-_Se usa para agregar los usuarios que se registras en la web talento activo_ 🚀
+# back-end de Medidas
+_Back de medidas_
+_Se usa para agregar los usuarios que se registras en la web medidas_ 🚀
 
 ## Instalacion 🧑‍💻
 1. clonar 🧠
