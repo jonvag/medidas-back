@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import userRoutes from '../routes/usuario';
+import authRoutes from '../routes/auth';
 import contactoRoutes from '../routes/contacto';
 import clientRoutes from '../routes/client';
 import cors from 'cors'; 
@@ -55,22 +56,20 @@ class Server {
         this.app.use( express.static('public') );
     }
 
-
     routes() {
         this.app.use( '/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSetup)),
+        this.app.use( '/auth', authRoutes),
         this.app.use( '/api/usuarios', userRoutes ),
-        this.app.use( '/api/usuarios', contactoRoutes )
+        //this.app.use( '/api/usuarios', contactoRoutes )
         this.app.use( '/api/client', clientRoutes ) 
 
     }
-
 
     listen() {
         this.app.listen( this.port, () => {
             console.log('\nServidor corriendo en puerto ' + this.port + '\n');
         })
     }
-
 }
 
 export default Server;

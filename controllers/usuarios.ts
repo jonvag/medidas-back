@@ -5,10 +5,9 @@ import Usuario from '../models/usuario';
 
 
 export const getUsuarios = async( req: Request , res: Response ) => {
-    console.log("entrando api usuarios");
 
     const usuarios = await Usuario.findAll();
-    console.log("\nbuscando usuarios\n", usuarios   );
+    console.log("\nSe  encontraron", usuarios.length  , " usuarios \n " );
 
     if( usuarios ) {
         res.json(usuarios);
@@ -57,13 +56,16 @@ export const postUsuario = async( req: Request , res: Response ) => {
         }
 
 
-        const usuario = new Usuario(body);
+        const usuario = new Usuario({
+            ...bodyRest, 
+            pass: hashedPassword 
+        });
         await usuario.save();
 
         setTimeout(() => {
             // Simular conexión a la base de datos
             console.log("estoy en set time out");
-            res.json( usuario );
+        res.json( usuario );
             // Resuelve la promesa con el archivo
           }, 2000); // 2000 es el tiempo de retraso en milisegundos
 

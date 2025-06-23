@@ -11,6 +11,9 @@ const Usuario = db.define('Usuario', {
     status: {
         type: DataTypes.BOOLEAN
     },
+    pass: {
+        type: DataTypes.STRING
+    },
 });
 
  

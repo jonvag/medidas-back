@@ -9,6 +9,12 @@ const db = new Sequelize('medidas_db', 'root', '', {
     port: 3306
 });  
 
+/* const db = new Sequelize('talentoa_medidas', 'talentoa_jonmedidas', 'jon102003123', {
+    host: 'talentoactivoglobal.com',
+    dialect: 'mysql',
+    port: 3306
+});   */
+
 
 /* esto si no existe la crea */
 /* (async () => {
