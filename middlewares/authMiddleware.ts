@@ -4,10 +4,8 @@ import Usuario from '../models/usuario';
 import User from '../interfaces/User';
 
 export const verifyToken = async (req: User, res: Response, next: NextFunction) => {
-    console.log("verifitoken ingreso")
     try {
         const token = req.headers['authorization']?.split(' ')[1];
-        console.log("Token del middleware ", token);
 
         if (!token) {
             return res.status(403).json({ message: 'Token no proporcionado' });
@@ -15,9 +13,6 @@ export const verifyToken = async (req: User, res: Response, next: NextFunction) 
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
         const user:User = await Usuario.findByPk(decoded.id);
-        console.log("Token del user ", user);
-
-
 
         if (!user) {
             return res.status(401).json({ message: 'Usuario no encontrado' });

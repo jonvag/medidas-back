@@ -8,7 +8,6 @@ import User from '../interfaces/User';
 
 //const JWT_SECRET = process.env.JWT_SECRET ; 
 
-
 export const login = async (req: Request, res: Response) => {
 
     const { email, pass } = req.body;
@@ -110,6 +109,19 @@ export const profile = async (req: Request, res: Response) => {
     return res.json({ user: req.user });
 }
 
+export const logout = (req: Request, res: Response) => {
+    console.log("Cerrando sesion ", req.user.email);
+    try {
+        // Opción 1: Simple respuesta de éxito (el cliente debe eliminar el token)
+        res.status(200).json({ success: true, message: 'Logout exitoso' });
+
+        // Opción 2: Si usas cookies (más seguro)
+        // res.clearCookie('token').status(200).json({ success: true, message: 'Logout exitoso' });
+    } catch (error) {
+        console.error('Error en logout:', error);
+        res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+};
 
 const generateToken = async (user: any) => {
     return jwt.sign(
