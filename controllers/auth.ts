@@ -3,6 +3,7 @@ import { json } from 'sequelize/types';
 import Usuario from '../models/usuario';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import validator from 'validator';
 
 import User from '../interfaces/User';
 
@@ -22,14 +23,14 @@ export const login = async (req: Request, res: Response) => {
 
         if (!user) {
             console.log("Fallo de inicio de sesión: user no encontrado con el email ", email);
-            return res.status(400).json({
+            return res.status(201).json({
                 msg: `No existe un user con el email ${email}`
             });
         }
 
         // Comparar contraseñas
         const isMatch = await bcrypt.compare(pass, user.pass);
-        if (!isMatch) return res.status(401).json({ error: 'Credenciales inválidas' });
+        if (!isMatch) return res.status(201).json({ error: 'Credenciales inválidas' });
 
         const payload = {
             uid: user.id,
@@ -43,8 +44,8 @@ export const login = async (req: Request, res: Response) => {
         // Generar token JWT
         const token = await generateToken(user);
 
-
         console.log("Usuario ha iniciado sesión exitosamente: ", email);
+
         res.send({
             msg: "Usuario aceptado.",
             id: payload.uid,
@@ -68,10 +69,62 @@ export const register = async (req: Request, res: Response) => {
     try {
         const { name, lastname, email, pass } = req.body;
 
+        // 1. Validación de campos requeridos
+        if (!name || !lastname || !email || !pass) {
+            return res.status(400).json({
+                success: false,
+                message: 'Todos los campos son obligatorios',
+                missingFields: {
+                    name: !name,
+                    lastname: !lastname,
+                    email: !email,
+                    pass: !pass
+                }
+            });
+        }
+
+        // 2. Validación de formato de email
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({
+                success: false,
+                message: 'El formato del email es inválido'
+            });
+        }
+
+        // 3. Validación de fortaleza de contraseña
+        /* if (!validator.isStrongPassword(pass, {
+            minLength: 8,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 1
+        })) {
+            return res.status(400).json({
+                success: false,
+                message: 'La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y símbolos'
+            });
+        } */
+
+        // 4. Validación de longitud máxima (protección contra ataques DoS)
+        if (name.length > 50 || lastname.length > 50 || email.length > 100 || pass.length > 255) {
+            return res.status(400).json({
+                success: false,
+                message: 'Los campos exceden la longitud máxima permitida'
+            });
+        }
+
+        // 5. Validación contra XSS (Cross-Site Scripting)
+        if (validator.contains(name, '<script>') || validator.contains(lastname, '<script>')) {
+            return res.status(400).json({
+                success: false,
+                message: 'Entrada no permitida'
+            });
+        }
+
         // Verificar si el usuario ya existe
         const existingUser = await Usuario.findOne({ where: { email: email } });
         if (existingUser) {
-            return res.status(400).json({ message: 'El usuario ya existe' });
+            return res.status(200).json({ message: 'El usuario ya existe' });
         }
 
         // Hash de contraseña
