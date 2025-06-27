@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { deleteCliente, gerClientsUser, getClients, postClient, puClient} from '../controllers/client';
+import { getClientInfo, getClientPeso } from '../controllers/infoClient';
 
 
 
@@ -61,6 +62,9 @@ router.get('/client-user/:id',    gerClientsUser );
 router.post('/',      postClient );
 router.put('/:id',    puClient );
 
+//clientes
+router.get('/client-info/:id',    getClientInfo );
+router.get('/client-peso/:id',    getClientPeso );
 router.delete('/:id', deleteCliente );
 
 

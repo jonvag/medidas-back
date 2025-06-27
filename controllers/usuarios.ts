@@ -45,12 +45,12 @@ export const postUsuario = async( req: Request , res: Response ) => {
         
         const existeEmail = await Usuario.findOne({
             where: {
-                email: body.email
+                email: body.email 
             }
         });
 
         if (existeEmail) {
-            return res.status(400).json({
+            return res.status(201).json({
                 msg: 'Ya existe un usuario con el email ' + body.email
             });
         }

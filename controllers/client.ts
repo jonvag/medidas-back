@@ -1,16 +1,18 @@
 import { Request, Response } from 'express';
 import { json } from 'sequelize/types';
-import Client from '../models/client';
 import { Op } from 'sequelize';
 
+import Client from '../models/client';
+import PesoClient from '../models/peso-client';
 
-export const getClients = async( req: Request , res: Response ) => {
+
+export const getClients = async (req: Request, res: Response) => {
 
 
     const clientes = await Client.findAll();
-    console.log("\nbuscando clientes\n total", clientes.length   );
+    console.log("\nbuscando clientes\n total", clientes.length);
 
-    if( clientes ) {
+    if (clientes) {
         res.json(clientes);
     } else {
         console.log("\nBase de datos vacia\n");
@@ -21,14 +23,14 @@ export const getClients = async( req: Request , res: Response ) => {
     }
 }
 
-export const gerClientsUser = async( req: Request , res: Response ) => {
+export const gerClientsUser = async (req: Request, res: Response) => {
 
     const { id } = req.params;
     console.log("se procede a identificar los clientes del user  ", id)
-    
+
 
     try {
-    const clients = await Client.findAll({
+        const clients = await Client.findAll({
             where: {
                 user_id: id,
                 status: {
@@ -37,31 +39,29 @@ export const gerClientsUser = async( req: Request , res: Response ) => {
             }
         });
 
-    if( clients ) {
-        res.json(clients);
-    } else {
-        res.status(404).json({
-            msg: `No existe un clients con el  id ${ id }`
-        });
-    }
+        if (clients) {
+            res.json(clients);
+        } else {
+            res.status(404).json({
+                msg: `No existe un clients con el  id ${id}`
+            });
+        }
 
     } catch (error) {
 
         console.log(" api gerClientsUser fallo", error);
         res.status(500).json({
             msg: 'Hable con el administrador'
-        })    
+        })
     }
 }
 
-export const postClient = async( req: Request , res: Response ) => {
+export const postClient = async (req: Request, res: Response) => {
 
-    const { body } = req; 
-    console.log("se procede a crear Contacto ", body)
-    
+    const { body } = req;
 
     try {
-        
+
         const existeEmail = await Client.findOne({
             where: {
                 email: body.email
@@ -74,38 +74,53 @@ export const postClient = async( req: Request , res: Response ) => {
             });
         }
 
-
         const client = new Client(body);
         await client.save();
-        
-        res.json( client );
+
+        const newPeso = {
+            client_id: client.id,
+            peso: body.peso,
+        }
+
+        const newPesoCreate = new PesoClient(newPeso);
+        await newPesoCreate.save();
+
+        res.json(client);
 
     } catch (error) {
 
-        console.log(" api postContacto fallo", error);
+        console.log(" api postClient fallo", error);
         res.status(500).json({
             msg: 'Hable con el administrador'
-        })    
+        })
     }
 }
 
-export const puClient = async( req: Request , res: Response ) => {
+export const puClient = async (req: Request, res: Response) => {
 
-    const { id }   = req.params;
+    const { id } = req.params;
     const { body } = req;
     console.log("actualizarcliente ", id);
     try {
-        
-        const client = await Client.findByPk( id );
-        if ( !client ) {
+
+        const client = await Client.findByPk(id);
+        if (!client) {
             return res.status(202).json({
                 msg: 'No existe un client con el id ' + id
             });
         }
 
-        await client.update( body );
+        await client.update(body);
 
-        res.json( client );
+        const newPeso = {
+            client_id: id,
+            peso: body.peso,
+        }
+
+        const newPesoCreate = new PesoClient(newPeso);
+        await newPesoCreate.save();
+
+        res.json(client);
 
 
     } catch (error) {
@@ -113,33 +128,33 @@ export const puClient = async( req: Request , res: Response ) => {
         console.log("error api put contacto", error);
         res.status(500).json({
             msg: 'Hable con el administrador'
-        })    
-    }   
+        })
+    }
 }
 
-export const deleteCliente = async( req: Request , res: Response ) => {
+export const deleteCliente = async (req: Request, res: Response) => {
 
     const { id } = req.params;
     console.log("");
     console.log("deleteCliente ", id);
     try {
-        
-    const cliente = await Client.findByPk( id );
-    if ( !cliente ) {
-        return res.status(404).json({
-            msg: 'No existe un cliente con el id ' + id
-        });
-    }
-    console.log(" cliente encontrado ", cliente);
 
-    await cliente.update({ status: 'eliminado' });
-    res.json('Cliente de  id '+ id + ' eliminado con exito');
+        const cliente = await Client.findByPk(id);
+        if (!cliente) {
+            return res.status(404).json({
+                msg: 'No existe un cliente con el id ' + id
+            });
+        }
+        console.log(" cliente encontrado ", cliente);
+
+        await cliente.update({ status: 'eliminado' });
+        res.json('Cliente de  id ' + id + ' eliminado con exito');
 
     } catch (error) {
 
         console.log(" api deleteCliente fallo", error);
         res.status(500).json({
             msg: 'Hable con el administrador'
-        })    
+        })
     }
 }

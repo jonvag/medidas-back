@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import db from '../db/connection';
 
-const Contacto = db.define('Client', {
+const Client = db.define('Client', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -58,4 +58,4 @@ const Contacto = db.define('Client', {
 });
 
  
-export default Contacto;
+export default Client;
