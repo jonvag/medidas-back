@@ -74,16 +74,14 @@ export const postClient = async (req: Request, res: Response) => {
             });
         }
 
-        const client = new Client(body);
-        await client.save();
+        const client = await Client.create(body);
 
         const newPeso = {
-            client_id: client.id,
+            client_id: (client as any).id,
             peso: body.peso,
         }
 
-        const newPesoCreate = new PesoClient(newPeso);
-        await newPesoCreate.save();
+        const newPesoCreate = await PesoClient.create(newPeso);
 
         res.json(client);
 
@@ -117,8 +115,7 @@ export const puClient = async (req: Request, res: Response) => {
             peso: body.peso,
         }
 
-        const newPesoCreate = new PesoClient(newPeso);
-        await newPesoCreate.save();
+        const newPesoCreate = await PesoClient.create(newPeso);
 
         res.json(client);
 

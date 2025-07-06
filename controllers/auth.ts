@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import validator from 'validator';
 
-import User from '../interfaces/User';
+import { User } from '../interfaces/User';
 
 //const JWT_SECRET = process.env.JWT_SECRET ; 
 
@@ -15,11 +15,19 @@ export const login = async (req: Request, res: Response) => {
 
     try {
 
-        const user: User = await Usuario.findOne({
-            where: {
-                email: email
-            }
-        });
+        const userInstance = await Usuario.findOne({ where: { email } });
+
+        if (!userInstance) {
+            return res.status(201).json({ msg: `No existe un user con el email ${email}` });
+        }
+
+        const user = userInstance.get({ plain: true });
+
+        if (user === null) {
+            return res.status(201).json({
+                msg: `No existe un user con el email ${email}`
+            });
+        }
 
         if (!user) {
             console.log("Fallo de inicio de sesión: user no encontrado con el email ", email);
@@ -131,13 +139,15 @@ export const register = async (req: Request, res: Response) => {
         const hashedPass = await bcrypt.hash(pass, 10); // 10 salt rounds
 
         // Crear nuevo usuario
-        const user: User = await Usuario.create({
+        const userInstance = await Usuario.create({
             name: name,
             lastname: lastname,
             email: email,
             pass: hashedPass,
             status: true
         });
+
+        const user = userInstance.get({ plain: true });
 
         // Generar token JWT
         const token = await generateToken(user);
@@ -158,18 +168,17 @@ export const register = async (req: Request, res: Response) => {
 
 }
 
-export const profile = async (req: Request, res: Response) => {
+export const profile = async (req: any, res: Response) => {
     return res.json({ user: req.user });
 }
 
 export const logout = (req: Request, res: Response) => {
-    console.log("Cerrando sesion ", req.user.email);
-    try {
-        // Opción 1: Simple respuesta de éxito (el cliente debe eliminar el token)
-        res.status(200).json({ success: true, message: 'Logout exitoso' });
+    const user = (req as any).user; // o mejor define un tipo específico
 
-        // Opción 2: Si usas cookies (más seguro)
-        // res.clearCookie('token').status(200).json({ success: true, message: 'Logout exitoso' });
+    console.log("Cerrando sesion ", user?.email);
+
+    try {
+        res.status(200).json({ success: true, message: 'Logout exitoso' });
     } catch (error) {
         console.error('Error en logout:', error);
         res.status(500).json({ success: false, message: 'Error en el servidor' });

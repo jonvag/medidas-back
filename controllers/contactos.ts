@@ -57,8 +57,7 @@ export const postContacto = async( req: Request , res: Response ) => {
         }
 
 
-        const contacto = new Contacto(body);
-        await contacto.save();
+        const contacto = await Contacto.create(body);
 
         setTimeout(() => {
             // Simular conexión a la base de datos
