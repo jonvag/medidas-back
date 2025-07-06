@@ -6,6 +6,7 @@ import clientRoutes from '../routes/client';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSetup from "../docs/swagger";
+import 'dotenv/config';
 
 import db from '../db/connection';
 
@@ -16,10 +17,10 @@ class Server {
 
     constructor() {
         this.app = express();
-        this.port = process.env.PORT || '8000';
+        this.port = process.env.PORT || '8443';
 
         // Métodos iniciales
-        this.dbConnection();
+        //this.dbConnection();
         this.middlewares();
         this.routes();
     }
