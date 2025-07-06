@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { json } from 'sequelize/types';
 import Contacto from '../models/contactos';
-
-
+import path from 'path'; 
+import fs from 'fs/promises';
 
 export const getContactos = async( req: Request , res: Response ) => {
 
@@ -20,6 +20,38 @@ export const getContactos = async( req: Request , res: Response ) => {
         });
     }
 }
+
+export const getArchivoTexto = async (req: Request, res: Response) => {
+    // 1. Construye la ruta absoluta al archivo.
+    // 'process.cwd()' te da el directorio de trabajo actual del Node.js (la raíz de tu proyecto).
+    // 'path.join' es la mejor forma de construir rutas para que funcionen en cualquier sistema operativo.
+    const filePath = path.join(process.cwd(), 'public', 'archivo.txt');
+
+    try {
+        // 2. Lee el contenido del archivo de forma asíncrona.
+        // 'utf8' es la codificación común para archivos de texto.
+        const fileContent = await fs.readFile(filePath, 'utf8');
+
+        // 3. Envía el contenido del archivo como respuesta.
+        // Establecemos el encabezado 'Content-Type' para indicar que estamos enviando texto plano.
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        res.send(fileContent);
+
+    } catch (error) {
+        // 4. Manejo de errores.
+        // Si el archivo no se encuentra, o hay algún otro error al leerlo.
+        if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+            return res.status(404).json({
+                msg: 'El archivo "archivo.txt" no se encontró.'
+            });
+        }
+
+        console.error("Error al leer el archivo:", error);
+        res.status(500).json({
+            msg: 'Error interno del servidor al procesar el archivo. Hable con el administrador.'
+        });
+    }
+};
 
 export const getContacto = async( req: Request , res: Response ) => {
 

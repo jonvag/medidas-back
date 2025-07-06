@@ -4,6 +4,9 @@ const DB_DATABASE = process.env.DB_DATABASE || 'medidas_db';
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || ''; // Si no tienes contraseña local, déjalo vacío
 const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_PORT_NUMBER: number = process.env.DB_PORT 
+    ? parseInt(process.env.DB_PORT, 10) 
+    : 3306;
 
 
 /* const db = new Sequelize('medidas_db', 'root', '', { 
@@ -14,7 +17,7 @@ const DB_HOST = process.env.DB_HOST || 'localhost';
 const db = new Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
   dialect: 'mysql',
-  port: 3306
+  port: DB_PORT_NUMBER 
 });
 
 

@@ -61,7 +61,8 @@ class Server {
             this.app.use('/auth', authRoutes),
             this.app.use('/api/usuarios', userRoutes),
             //this.app.use( '/api/usuarios', contactoRoutes )
-            this.app.use('/api/client', clientRoutes)
+            this.app.use('/api/client', clientRoutes),
+            this.app.use('/api/contacto', contactoRoutes)
 
     }
 
@@ -71,6 +72,8 @@ class Server {
             console.log('\nDB_HOST ' +  process.env.DB_HOST + '\n');
             console.log('\nDB_USER ' + process.env.DB_USER + '\n');
             console.log('\nDB_DATABASE ' + process.env.DB_DATABASE + '\n');
+            console.log('\nDB_PASSWORD ' + process.env.DB_PASSWORD + '\n');
+            console.log('\nDB_PORT ' + process.env.DB_PORT + '\n');
         })
     }
 }
