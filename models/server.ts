@@ -17,10 +17,10 @@ class Server {
 
     constructor() {
         this.app = express();
-        this.port = process.env.PORT || '8443';
+        this.port = process.env.PORT || '8000';
 
         // Métodos iniciales
-        //this.dbConnection();
+        this.dbConnection();
         this.middlewares();
         this.routes();
     }
@@ -68,6 +68,9 @@ class Server {
     listen() {
         this.app.listen(this.port, () => {
             console.log('\nServidor corriendo en puerto ' + this.port + '\n');
+            console.log('\nDB_HOST ' +  process.env.DB_HOST + '\n');
+            console.log('\nDB_USER ' + process.env.DB_USER + '\n');
+            console.log('\nDB_DATABASE ' + process.env.DB_DATABASE + '\n');
         })
     }
 }
