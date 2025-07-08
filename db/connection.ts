@@ -14,11 +14,30 @@ const DB_PORT_NUMBER: number = process.env.DB_PORT
     dialect: 'mysql',
     port: 3306
 }); */
-const db = new Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
+/* const db = new Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
   dialect: 'mysql',
   port: DB_PORT_NUMBER 
-});
+}); */
+
+const db = new Sequelize('mysql://root:NHPUuGdzjSXGnBNxCIQmwefXMepdfTbx@shuttle.proxy.rlwy.net:35976/railway', {
+        dialect: 'mysql',
+        // Opciones adicionales, si las necesitas. Por ejemplo, para desactivar logging:
+        logging: false, // Desactiva los logs SQL de Sequelize (opcional, bueno para producción)
+        dialectOptions: {
+            // Ejemplo de opciones adicionales para MySQL si tuvieras SSL/TLS, etc.
+            // ssl: {
+            //     require: true,
+            //     rejectUnauthorized: false // Puede ser necesario para algunos entornos de Railway/cloud si usas SSL
+            // }
+        },
+        pool: { // Configuración del pool de conexiones (opcional, pero buena práctica)
+            max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000
+        }
+    });
 
 
 /* const db = new Sequelize('talentoa_medidas', 'talentoa_jonmedidas', 'jon102003123', {
