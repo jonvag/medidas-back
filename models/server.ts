@@ -20,7 +20,7 @@ class Server {
         this.port = process.env.PORT || '8000';
 
         // Métodos iniciales
-        this.dbConnection();
+        /* this.dbConnection(); */
         this.middlewares();
         this.routes();
     }
