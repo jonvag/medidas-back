@@ -15,10 +15,16 @@ const DB_PORT_NUMBER: number = process.env.DB_PORT
     port: 3306
 }); */
 
-const db = new Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
+/* const db = new Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
   dialect: 'mysql',
   port: DB_PORT_NUMBER
+}); */
+
+const db = new Sequelize('railway', 'root', 'NHPUuGdzjSXGnBNxCIQmwefXMepdfTbx', {
+  host: 'mysql.railway.internal',
+  dialect: 'mysql',
+  port: 3306
 });
 
 /* const db = new Sequelize('mysql://root:NHPUuGdzjSXGnBNxCIQmwefXMepdfTbx@shuttle.proxy.rlwy.net:35976/railway', {
