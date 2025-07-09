@@ -3,7 +3,7 @@
 import { DataTypes } from 'sequelize';
 import db from '../db/connection'; 
 
-const PesoClient = db.define('PesoClient', {
+const PesoClient = db.define('Weight', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -27,8 +27,6 @@ const PesoClient = db.define('PesoClient', {
         allowNull: false,
         defaultValue: DataTypes.NOW
     }
-}, {
-    tableName: 'peso_clients' // <-- Aquí especificas el nombre exacto de la tabla
 });
 
 export default PesoClient;
