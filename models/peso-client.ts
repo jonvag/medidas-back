@@ -15,7 +15,15 @@ const PesoClient = db.define('Weight', {
     },
     peso: {
         type: DataTypes.STRING,
-        allowNull: false 
+        allowNull: true 
+    },
+    estatura: {
+        type: DataTypes.STRING,
+        allowNull: true 
+    },
+    cintura: {
+        type: DataTypes.STRING,
+        allowNull: true 
     },
     createdAt: {
         type: DataTypes.DATE,

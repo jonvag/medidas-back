@@ -113,6 +113,8 @@ export const puClient = async (req: Request, res: Response) => {
         const newPeso = {
             client_id: id,
             peso: body.peso,
+            estatura: body.estatura,
+            cintura: body.circunferencia,
         }
 
         const newPesoCreate = await PesoClient.create(newPeso);
