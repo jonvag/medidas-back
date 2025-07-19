@@ -98,7 +98,6 @@ export const puClient = async (req: Request, res: Response) => {
 
     const { id } = req.params;
     const { body } = req;
-    console.log("actualizarcliente ", id);
     try {
 
         const client = await Client.findByPk(id);
