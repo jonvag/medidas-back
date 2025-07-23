@@ -79,6 +79,14 @@ export const postClient = async (req: Request, res: Response) => {
         const newPeso = {
             client_id: (client as any).id,
             peso: body.peso,
+            estatura: body.estatura,
+            cintura: body.cintura,
+            muneca: body.muneca,
+            brazo: body.brazo,
+            abdominal: body.abdominal,
+            cadera: body.cadera,
+            triceps: body.triceps,
+            subescapular: body.subescapular,
         }
 
         const newPesoCreate = await PesoClient.create(newPeso);
@@ -114,13 +122,17 @@ export const puClient = async (req: Request, res: Response) => {
             peso: body.peso,
             estatura: body.estatura,
             cintura: body.circunferencia,
+            muneca: body.muneca,
+            brazo: body.brazo,
+            abdominal: body.abdominal,
+            cadera: body.cadera,
+            triceps: body.triceps,
+            subescapular: body.subescapular
         }
 
         const newPesoCreate = await PesoClient.create(newPeso);
 
         res.json(client);
-
-
     } catch (error) {
 
         console.log("error api put contacto", error);
@@ -133,7 +145,6 @@ export const puClient = async (req: Request, res: Response) => {
 export const deleteCliente = async (req: Request, res: Response) => {
 
     const { id } = req.params;
-    console.log("");
     console.log("deleteCliente ", id);
     try {
 

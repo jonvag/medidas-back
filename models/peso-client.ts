@@ -25,6 +25,28 @@ const PesoClient = db.define('Weight', {
         type: DataTypes.STRING,
         allowNull: true 
     },
+    muneca: {
+        type: DataTypes.STRING,
+        allowNull: true 
+    },
+    brazo: {
+        type: DataTypes.STRING,
+        allowNull: true 
+    },
+    abdominal: {
+        type: DataTypes.STRING,
+        allowNull: true 
+    },cadera: {
+        type: DataTypes.STRING,
+        allowNull: true 
+    },triceps: {
+        type: DataTypes.STRING,
+        allowNull: true 
+    },subescapular: {
+        type: DataTypes.STRING,
+        allowNull: true 
+    },
+
     createdAt: {
         type: DataTypes.DATE,
         allowNull: false,

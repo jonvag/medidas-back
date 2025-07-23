@@ -60,7 +60,6 @@ class Server {
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSetup)),
             this.app.use('/auth', authRoutes),
             this.app.use('/api/usuarios', userRoutes),
-            //this.app.use( '/api/usuarios', contactoRoutes )
             this.app.use('/api/client', clientRoutes),
             this.app.use('/api/contacto', contactoRoutes)
 
