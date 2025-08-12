@@ -15,3 +15,17 @@ Npm i
 ```
 Npm run dev
 ```
+
+#Si se desea correr en docker
+```
+docker-compose up -d --build
+```
+
+para detener los contenedores
+```
+docker-compose down
+```
+
+##para reiniciar contenedor
+
+docker-compose down && docker-compose up -d --build

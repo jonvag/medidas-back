@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 
-const DB_DATABASE = process.env.DB_DATABASE || 'medidas_db';
+const DB_DATABASE = process.env.DB_DATABASE || 'medidasbd';
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || ''; // Si no tienes contraseña local, déjalo vacío
 const DB_HOST = process.env.DB_HOST || 'localhost';
@@ -9,11 +9,16 @@ const DB_PORT_NUMBER: number = process.env.DB_PORT
   : 3306;
 
 
-/* const db = new Sequelize('medidas_db', 'root', '', { 
-    host: 'localhost', 
+const db = new Sequelize(
+  DB_DATABASE || 'medidasbd', 
+  DB_USER || 'root', 
+  DB_PASSWORD || '', 
+  { 
+    host: DB_HOST || 'localhost', 
     dialect: 'mysql',
-    port: 3306
-}); */
+    port: parseInt(process.env.DB_PORT || '3306')
+  }
+);
 
 /* const db = new Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
@@ -21,11 +26,11 @@ const DB_PORT_NUMBER: number = process.env.DB_PORT
   port: DB_PORT_NUMBER
 }); */
 
-const db = new Sequelize('railway', 'root', 'NHPUuGdzjSXGnBNxCIQmwefXMepdfTbx', {
+/* const db = new Sequelize('railway', 'root', 'NHPUuGdzjSXGnBNxCIQmwefXMepdfTbx', {
   host: 'mysql.railway.internal',
   dialect: 'mysql',
   port: 3306
-});
+}); */
 
 /* const db = new Sequelize('mysql://root:NHPUuGdzjSXGnBNxCIQmwefXMepdfTbx@shuttle.proxy.rlwy.net:35976/railway', {
   dialect: 'mysql',
