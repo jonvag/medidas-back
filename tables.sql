@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `Usuarios` (
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 -- Dumping structure for table medidasbd.Clients
 CREATE TABLE IF NOT EXISTS `Clients` (
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `Clients` (
   PRIMARY KEY (`id`),
   KEY `FK_clients_usuarios` (`user_id`),
   CONSTRAINT `FK_clients_usuarios` FOREIGN KEY (`user_id`) REFERENCES `Usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 -- Data exporting was unselected.
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `Info` (
   PRIMARY KEY (`id`),
   KEY `FK__Clients` (`id_client`),
   CONSTRAINT `FK__Clients` FOREIGN KEY (`id_client`) REFERENCES `Clients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 -- Data exporting was unselected.
 
@@ -72,5 +72,22 @@ CREATE TABLE IF NOT EXISTS `Weights` (
   PRIMARY KEY (`id`),
   KEY `FK_peso_clients_clients` (`client_id`),
   CONSTRAINT `FK_peso_clients_clients` FOREIGN KEY (`client_id`) REFERENCES `Clients` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
+CREATE TABLE `Goals` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `client_id` int unsigned NOT NULL,
+  `motivo_consulta` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
+  `obje_esperado` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
+  `tabaco` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
+  `alcohol` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
+  `hora_dormir` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
+  `hora_despertar` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
+  `horas_sueno` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
+  `info_adicional` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
+  `createdAt` timestamp NULL DEFAULT NULL,
+  `updatedAt` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_clients_goals` (`client_id`),
+  CONSTRAINT `FK_clients_goals` FOREIGN KEY (`client_id`) REFERENCES `Clients` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;

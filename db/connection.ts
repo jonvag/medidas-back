@@ -1,20 +1,27 @@
 import { Sequelize } from 'sequelize';
 
-const DB_DATABASE = process.env.DB_DATABASE || 'medidasbd';
-const DB_USER = process.env.DB_USER || 'root';
-const DB_PASSWORD = process.env.DB_PASSWORD || ''; // Si no tienes contraseña local, déjalo vacío
+const DB_DATABASE = process.env.DB_NAME || 'medidasbd';
+const DB_USER = process.env.DB_USER || 'useremote';
+const DB_PASSWORD = process.env.DB_PASSWORD || 'secret'; // Si no tienes contraseña local, déjalo vacío
 const DB_HOST = process.env.DB_HOST || 'localhost';
 const DB_PORT_NUMBER: number = process.env.DB_PORT
   ? parseInt(process.env.DB_PORT, 10)
   : 3306;
 
+console.log('\n Conectando DB_DATABASE: ', DB_DATABASE);
+
+console.log('\n Conectando DB_USER: ', DB_USER);
+
+console.log('\n Conectando DB_PASSWORD: ', DB_PASSWORD);
+
+console.log('\n Conectando DB_HOST: ', DB_HOST);
 
 const db = new Sequelize(
-  DB_DATABASE || 'medidasbd', 
-  DB_USER || 'root', 
-  DB_PASSWORD || '', 
+  DB_DATABASE, 
+  DB_USER, 
+  DB_PASSWORD, 
   { 
-    host: DB_HOST || 'localhost', 
+    host: DB_HOST, 
     dialect: 'mysql',
     port: parseInt(process.env.DB_PORT || '3306')
   }

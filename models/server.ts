@@ -1,12 +1,17 @@
 import express, { Application } from 'express';
+import path from 'path';
+import dotenv from 'dotenv';
+// Cargar .env explícitamente usando ruta relativa para asegurar que se lea
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+
 import userRoutes from '../routes/usuario';
 import authRoutes from '../routes/auth';
 import contactoRoutes from '../routes/contacto';
 import clientRoutes from '../routes/client';
+import pacientesRoutes from '../routes/pacientes';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSetup from "../docs/swagger";
-import 'dotenv/config';
 
 import db from '../db/connection';
 
@@ -61,6 +66,7 @@ class Server {
             this.app.use('/auth', authRoutes),
             this.app.use('/api/usuarios', userRoutes),
             this.app.use('/api/client', clientRoutes),
+            this.app.use('/api/pacientes', pacientesRoutes),
             this.app.use('/api/contacto', contactoRoutes)
 
     }
@@ -70,7 +76,7 @@ class Server {
             console.log('\nServidor corriendo en puerto ' + this.port + '\n');
             console.log('\nDB_HOST ' +  process.env.DB_HOST + '\n');
             console.log('\nDB_USER ' + process.env.DB_USER + '\n');
-            console.log('\nDB_DATABASE ' + process.env.DB_DATABASE + '\n');
+            console.log('\nDB_DATABASE ' + process.env.DB_NAME + '\n');
             console.log('\nDB_PASSWORD ' + process.env.DB_PASSWORD + '\n');
             console.log('\nDB_PORT ' + process.env.DB_PORT + '\n');
         })
