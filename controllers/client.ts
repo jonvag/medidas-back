@@ -4,6 +4,7 @@ import { Op } from 'sequelize';
 
 import Client from '../models/client';
 import PesoClient from '../models/peso-client';
+import { Plan } from '../models';
 
 
 export const getClients = async (req: Request, res: Response) => {
@@ -90,6 +91,20 @@ export const postClient = async (req: Request, res: Response) => {
         }
 
         const newPesoCreate = await PesoClient.create(newPeso);
+
+        const newPlanInicial = {
+            client_id: (client as any).id,
+            lacteos: '0',
+            almidones: '0',
+            vegetales: '0',
+            frutas: '0',
+            carnes_magra: '0',
+            carnes_semi: '0',
+            carnes_grasa: '0',
+            grasas: '0'
+        }
+
+        const newPlanInicialCreate = await Plan.create(newPlanInicial);
 
         res.json(client);
 
