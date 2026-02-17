@@ -4,6 +4,7 @@ import { Op } from 'sequelize';
 import { Client, Plan } from '../models'
 
 import Goal from '../models/goals';
+import Agent from '../models/agents';
 
 export const putClientGoals = async (req: Request, res: Response) => {
 
@@ -70,6 +71,10 @@ export const getUserClientsPlans = async (req: Request, res: Response) => {
                 // Puedes especificar qué columnas del plan quieres traer
                 //attributes: ['lacteos', 'vegetales', 'frutas'],
                 as: 'plan_nutricional'
+            }, {
+                model: Agent,
+                attributes: ['codigo'], // Aquí especificas que solo quieres el campo 'codigo'
+                as: 'agente_asociado' // Descomenta esta línea si usas un alias en la asociación
             }]
 
         });
