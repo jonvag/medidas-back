@@ -137,7 +137,6 @@ export const putClientPlan = async (req: Request, res: Response) => {
     const { body } = req;
     const { client_id } = body;
 
-
     try {
         const planUpdate = {
             client_id: client_id,
@@ -151,13 +150,12 @@ export const putClientPlan = async (req: Request, res: Response) => {
             grasas: body.grasas
         }
 
-        console.log("planUpdate:", planUpdate);
-
         const plan = await Plan.findOne({
             where: {
                 client_id: client_id
             }
         });
+
         if (!plan) {
             console.log("Creando nuevo plan para client_id:", client_id);
             const planCrear = await Plan.create(planUpdate);
@@ -169,12 +167,50 @@ export const putClientPlan = async (req: Request, res: Response) => {
         } else {
             console.log("Actualizando plan existente para client_id:", client_id);
             await plan.update(planUpdate);
+
+            //actualizar el codigo del agente asociado al cliente
+            let codigoAvailable:string = "El codigo ya esta registrado a otro cliente por favor cambiarlo por otro";
+            let codClientStatus:number = 0; //0 ok, 1 error
+            const agentCodDisponible = await Agent.findOne({
+                where: {
+                    codigo: body.codigo,
+                    client_id: { [Op.ne]: client_id } // Asegura que el código no esté asociado a otro cliente
+                }
+            });
+
+            if (!agentCodDisponible) {
+                const agenteAsociado = await Agent.findOne({
+                    where: {
+                        client_id: client_id
+                    }
+                });
+
+                if (agenteAsociado) {
+                    await agenteAsociado.update({ codigo: body.codigo });
+                    codigoAvailable = "Código actualizado correctamente";
+                } else {
+                    console.log("No se encontró el agente asociado para el cliente con id:", client_id);
+                    codigoAvailable = "no se encontró el agente asociado para el cliente, por favor asignar un agente con ese código";
+                    codClientStatus = 1;
+                }
+            } else {
+                console.log("No se encontró el cliente con id:", client_id);
+                codigoAvailable = "El código ya esta registrado a otro cliente por favor cambiarlo por otro";
+                codClientStatus = 1;
+            }
+
+
             res.status(201).json({
                 msg: 'plan actualizado',
                 data: plan,
-                status: 201
+                status: 201,
+                codClient: {
+                    status: codClientStatus,
+                    detail: codigoAvailable
+                }
             });
         }
+
     } catch (error) {
 
         console.log("error api put contacto", error);
